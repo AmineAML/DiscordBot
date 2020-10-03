@@ -1,0 +1,40 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "test": "tsc",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "ts-node src"
+  },
+  "keywords": [],
+  "author": "AmineAML",
+  "license": "MIT",
+  "dependencies": {
+    "@typeit/discord": "^4.0.8",
+    "axios": "^0.20.0",
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.2.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.7",
+    "node-nlp": "^4.12.0",
+    "string-similarity": "^4.0.2",
+    "tslib": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/express": "^4.17.8",
+    "@types/joi": "^14.3.4",
+    "@types/mongodb": "^3.5.27",
+    "@types/mongoose": "^5.7.36",
+    "@types/node": "^14.11.2",
+    "@types/string-similarity": "^3.0.0",
+    "nodemon": "^2.0.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}
