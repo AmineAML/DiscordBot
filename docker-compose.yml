@@ -2,15 +2,16 @@ version: '3.8'
 
 services: 
     db:
+        container_name: discordbot
         image: mongo
         ports:
-            - '27017:27017'
+            - '${DOCKER_MONGO_PORT}:${DOCKER_MONGO_PORT}'
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: bj4RTRXSJyxrv8M3
-            MONGO_INITDB_DATABASE: discordbot
-            MONGO_USERNAME: discordbot-admin
-            MONGO_PASSWORD: bj4RTRXSJyxrv8M3
+            MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_MONGO_PASSWORD}
+            MONGO_INITDB_DATABASE: ${DOCKER_MONGO_DATABASE}
+            MONGO_USERNAME: ${DOCKER_MONGO_USERNAME}
+            MONGO_PASSWORD: ${DOCKER_MONGO_PASSWORD}
         volumes:
             - ./data/db
             - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro

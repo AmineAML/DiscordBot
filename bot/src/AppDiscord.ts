@@ -1,5 +1,5 @@
 //Use the Client that are provided by @typeit/discord
-import { Discord, On, CommandMessage, Command, CommandNotFound, Description } from "@typeit/discord";
+import { Discord, CommandMessage, CommandNotFound } from "@typeit/discord";
 import * as Path from 'path'
 
 @Discord("!", {

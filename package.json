@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "up": "docker-compose up -d",
+    "up": "docker-compose --env-file ./bot/.env up -d",
     "postup": "npm run dev",
     "stop": "docker-compose stop",
     "down": "docker-compose down",
