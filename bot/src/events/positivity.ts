@@ -16,8 +16,6 @@ export abstract class RedditDiscordCommands {
 
         if (cnl!.name !== 'positivity') return;
 
-        const channel = message.guild!.channels.cache.find(ch => ch.name === 'positivity') as TextChannel
-
         const userMessageContent = message.content.toLowerCase()
 
         const { Language } = require('node-nlp')

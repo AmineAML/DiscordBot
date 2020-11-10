@@ -1,6 +1,6 @@
 import { CommandMessage, Command, Description } from '@typeit/discord'
-import { RedditPosts } from '../models'
-import { reddit } from '../services/command-service'
+import { RedditPosts } from '../types'
+import { r } from '../utils'
 import * as RedditService from '../services/reddit-service'
 
 export abstract class TwitchDiscordCommands {
@@ -32,7 +32,7 @@ export abstract class TwitchDiscordCommands {
         const resultsS = await Promise.allSettled(children.map(element => {
             const { link_flair_text, selftext } = element.data
     
-            //Some posts doesn't include any flairs
+            //Filter for posts that include a quote, some posts doesn't include any flairs
             if (link_flair_text != null) {
                 if (link_flair_text.toLowerCase().includes('quote')) {
                     return selftext
@@ -40,7 +40,7 @@ export abstract class TwitchDiscordCommands {
             }
         }))
         
-        const selftexts = reddit(resultsS)
+        const selftexts = r(resultsS)
 
         const stoic = selftexts[Math.floor(Math.random() * selftexts.length)]
 
@@ -63,13 +63,14 @@ export abstract class TwitchDiscordCommands {
     
             //Some posts doesn't include any image links
             if (url_overridden_by_dest != null || url_overridden_by_dest != undefined) {
-                if (url_overridden_by_dest!.length > 0) {
+                //Filter out empty links and those linked to a gallery
+                if (url_overridden_by_dest!.length > 0 && !url_overridden_by_dest!.includes('gallery') && url_overridden_by_dest!.includes('redd')) {
                     return url_overridden_by_dest
                 }
             }
         }))
         
-        const pictures = reddit(resultsH)
+        const pictures = r(resultsH)
 
         const picture = pictures[Math.floor(Math.random() * pictures.length)]
 

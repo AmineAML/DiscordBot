@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export async function start() {
+export async function startDiscordApp() {
     const client = new Client({
         classes: [
             `${__dirname}/*.ts`, // glob string to load the classes

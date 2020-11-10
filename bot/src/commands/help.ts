@@ -1,5 +1,5 @@
 import { CommandMessage, Command, Description } from '@typeit/discord'
-import { botCommands } from '../services/command-service'
+import { botCommands } from '../utils/utils'
 
 export abstract class HelpCommand {
     @Command("help")

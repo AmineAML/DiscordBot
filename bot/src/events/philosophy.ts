@@ -1,6 +1,6 @@
 import { Description, On, ArgsOf, Client } from '@typeit/discord'
 import { TextChannel } from 'discord.js';
-import { getBotMessage } from '../services/command-service';
+import { getBotMessage } from '../utils';
 
 export abstract class RedditDiscordCommands {
     @On("message")
@@ -28,28 +28,38 @@ export abstract class RedditDiscordCommands {
             const botUserMessage = await getBotMessage('languagelearning', userMessageContent)
 
             channel.send(botUserMessage)
+            
+            channel.stopTyping()
         } else if (userMessageContent.includes('dating') && userMessageContent.includes('advice'))  {
             const botUserMessage = await getBotMessage('dating_advice', userMessageContent)
 
             channel.send(botUserMessage)
+
+            channel.stopTyping()
         } else if (userMessageContent.includes('relationship') && userMessageContent.includes('advice')) {
             const botUserMessage = await getBotMessage('relationship_advice', userMessageContent)
 
             channel.send(botUserMessage)
+            
+            channel.stopTyping()
         } else if (userMessageContent.includes('dating')) {
             const botUserMessage = await getBotMessage('dating', userMessageContent)
 
             channel.send(botUserMessage)
+
+            channel.stopTyping()
         } else if (userMessageContent.includes('relationship')) {
             const botUserMessage = await getBotMessage('relationships', userMessageContent)
 
             channel.send(botUserMessage)
+
+            channel.stopTyping()
         }
         
         else {
             channel.send(message.content)
-        }
 
-        channel.stopTyping()
+            channel.stopTyping()
+        }
     }
 }

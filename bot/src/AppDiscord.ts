@@ -11,6 +11,6 @@ import * as Path from 'path'
 abstract class AppDiscord {
     @CommandNotFound()
     async notFound(command: CommandMessage) {
-        command.reply("Command not found, try !help")
+        command.channel.send("Command not found, try !help")
     }
 }
