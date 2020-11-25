@@ -28,13 +28,19 @@ export const getBotMessage = async (subreddit: string, message: string) => {
     const selftexts = r(resultsT)
     
     const resultsL = await Promise.allSettled(children.map(element => {
-        return element.data.permalink
+        const { num_comments } = element.data
+
+        //Some posts doesn't include any comments
+        if (num_comments > 0) {
+            return element.data.permalink
+        }
     }))
     
     const links = r(resultsL)
     
     const bestPostMatch = stringSimilarity.findBestMatch(message, selftexts).bestMatchIndex
                 
+    //Example of error: Error: Bad arguments: First argument should be a string, second should be an array of strings
     console.log(links[bestPostMatch])
     
     const link: string = links[bestPostMatch].substring(0, links[bestPostMatch].length - 1) + ".json"

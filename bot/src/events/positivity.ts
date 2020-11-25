@@ -21,14 +21,18 @@ export abstract class RedditDiscordCommands {
         const { Language } = require('node-nlp')
 
         const langauge = new Language()
-        const guess = langauge.guess(userMessageContent)
+        const guess = langauge.guess(userMessageContent, ['en', 'fr'])
+
+        console.log(guess)
 
         const { SentimentManager } = require('node-nlp');
 
         const sentiment = new SentimentManager()
 
         if (guess[0].language == 'English') {
-            const vote = await sentiment.process(guess[0].alpha2, userMessageContent).vote
+            const positvity = await sentiment.process(guess[0].alpha2, userMessageContent)
+
+            const vote = positvity.vote
 
             if (vote == "positive") {
                 message.react('👍')
@@ -38,7 +42,9 @@ export abstract class RedditDiscordCommands {
         }
 
         if (guess[0].language == 'French') {
-            const vote = await sentiment.process(guess[0].alpha2, userMessageContent).vote
+            const positvity = await sentiment.process(guess[0].alpha2, userMessageContent)
+
+            const vote = positvity.vote
 
             if (vote == "positive") {
                 message.react('👍')
