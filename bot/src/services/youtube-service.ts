@@ -46,7 +46,7 @@ export const getChannel = async(channelName: string) => {
 
                     if (resS.data.pageInfo!.totalResults! > 0) {
 
-                        channelId = resS.data.items![0].id!
+                        channelId = resS.data.items![0].id!.channelId
 
                         console.log(channelId)
                     } else {
