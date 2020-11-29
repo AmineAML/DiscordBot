@@ -16,7 +16,7 @@ dotenv.config()
  * @param streamers.channelName Twitch or YouTube channel name
  * @param streamers.channelId Twitch or YouTube channel Id
  * @param streamers.type Accept t for Twitch and y for YouTube
- * @returns List of channels that are live streaming
+ * @returns Array of objects of channels that are live streaming
  */
 export const streaming = async (streamers: { channelName: string, channelId: string, type: string }[]) => {
     let twitchers: string[] = []
@@ -34,27 +34,27 @@ export const streaming = async (streamers: { channelName: string, channelId: str
 
     const { data } =  channels
 
-    let youtubersStreaming: string[] = []
+    let youtubersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = []
 
     await Promise.allSettled(youtubers.map(async youtuber => {
         const data = await YoutubeServices.getLiveStreaming(youtuber)
 
         if (data.length > 0) {
             data.forEach(channel => {
-                youtubersStreaming.push(`@everyone${channel.channelTitle} is live streaming! Here's a link: https://www.youtube.com/watch?v=${channel.videoId}`)
+                youtubersStreaming.push({ channelName: channel.channelTitle, channelUrl: `https://www.youtube.com/watch?v=${channel.videoId}`, thumbnail: channel.thumbnail })
             })
         }
     }))
 
-    let twitchersStreaming: string[] = []
+    let twitchersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = []
 
     for (let i = 0; i < data.length; i++) {
-        twitchersStreaming.push(`@everyone ${data[i].user_name} is live streaming! Here's a link: https://www.twitch.tv/${data[i].user_name.toLowerCase()}`)
+        twitchersStreaming.push({ channelName: data[i].user_name, channelUrl: `https://www.twitch.tv/${data[i].user_name.toLowerCase()}`, thumbnail: data[i].thumbnail_url.replace('{width}', '480').replace('{height}', '360')})
     }
 
-    let usersStreaming: string[] = twitchersStreaming.concat(youtubersStreaming)
+    let usersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = twitchersStreaming.concat(youtubersStreaming)
 
-    return usersStreaming.join('\n')
+    return usersStreaming
 }
 
 /**
@@ -491,4 +491,53 @@ const youtuberLiveStreamingWebhook = async (channelId: string) => {
     }
 
     return youtubersStreaming
+}
+
+/**
+ * Recommends a user from a Twitch game/category
+ * @param game Twitch game/category's name
+ * @returns Object of channel
+ */
+export const twitchChannelRecommendation = async(game: string) => {
+    let channel: { name: string, image: string, description: string } | undefined
+
+    const resG: any = await TwitchService.game(game)
+
+    const games = resG.data
+
+    if (games.length > 0) {
+        const id = games[0].id
+
+        console.log(id)
+
+        const resC: any = await TwitchService.channelByGame(id)
+
+        const channels = resC.data
+
+        if (channels.length > 0) {
+            const { user_name, user_id } = channels[Math.floor(Math.random() * channels.length)]
+
+            console.log(user_name)
+
+            const resU: any = await TwitchService.user(user_id)
+
+            console.log(resU)
+
+            const user = resU.data
+
+            if (user.length > 0) {
+                console.log(user)
+
+                const { profile_image_url, description } = user[0]
+
+                channel = {
+                    name: user_name,
+                    image: profile_image_url,
+                    description: description
+                }
+            }
+        }
+    }
+
+    return channel
 }

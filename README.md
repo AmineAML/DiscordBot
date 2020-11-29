@@ -1,6 +1,6 @@
 <h1 align="center">Discord Bot</h1>
 
-Discord bot which performs auto moderation and notify about Twitch and YouTube channels that are live streaming. Bot can do a basic conversation. By using [NLP.js](https://github.com/axa-group/nlp.js), the bot can guess the language (currently English and French) and react to the user's message by a '👍' for positivity and '👎' for negativity. User can add/remove Twitch and YouTube channels to/from the notification list, also retrieve them and display those who are live streaming
+Discord bot which performs auto moderation and notify about Twitch and YouTube channels that are live streaming. Bot can do a basic conversation. By using [NLP.js](https://github.com/axa-group/nlp.js), the bot can guess the language (currently English and French) and react to the user's message by a '👍' for positivity and '👎' for negativity. Twitch and YouTube live streams notifications and Twitch channels suggestions
 
 ## Features and commands
 <img src="bot\assets\pictures\Bot.png">

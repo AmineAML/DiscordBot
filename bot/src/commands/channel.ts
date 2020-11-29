@@ -1,16 +1,17 @@
 import { CommandMessage, Command, Description } from '@typeit/discord'
 import { Channel, Youtuber } from '../models'
-import { TwitchArgs } from '../types'
-import { isDevPubUrlWorking, streamersen, streaming, twitchChannelWebhook } from '../utils'
+import { ChannelArgs } from '../types'
+import { isDevPubUrlWorking, streamersen, streaming, twitchChannelRecommendation, twitchChannelWebhook } from '../utils'
 import * as TwitchService from '../services/twitch-service'
 import { EXPIRATION_IN_SECONDS, IN_PROD } from '../config'
 import moment from 'moment'
 import * as YoutubeService from '../services/youtube-service'
+import { MessageEmbed } from 'discord.js'
 
 export abstract class TwitchDiscordCommands {
     @Command("add :type :channelName")
     @Description("Add a channel to the live streaming notification list")
-    async webhook(command: CommandMessage<TwitchArgs>) {
+    async webhook(command: CommandMessage<ChannelArgs>) {
         command.channel.startTyping()
 
         const { type } = command.args
@@ -194,7 +195,7 @@ export abstract class TwitchDiscordCommands {
 
     @Command("remove :channelName")
     @Description("Remove a channel from the live streaming notification list")
-    async remove(command: CommandMessage<TwitchArgs>) {
+    async remove(command: CommandMessage<ChannelArgs>) {
         command.channel.startTyping()
 
         //The default Discord.ts method of destructuring considers whitespaces to differentiate elements, YouTube channels' name are not necessarily without wihtespaces
@@ -295,7 +296,15 @@ export abstract class TwitchDiscordCommands {
             //console.log(streamings)
 
             if (streamings.length > 0) {
-                command.channel.send(`${t} ${c} ${a} live streaming:\n${streamings}`)
+                command.channel.send(`${t} ${c} ${a} live streaming:`)
+
+                streamings.forEach(channel => {
+                    const channels = new MessageEmbed()
+                    .setColor('#0099ff')
+                    .addField(`${channel.channelName}'s live streaming`, `Here's a link: ${channel.channelUrl}` )
+                    .setThumbnail(channel.thumbnail)
+                    command.channel.send(channels)
+                })
 
                 command.channel.stopTyping()
             } else {
@@ -335,6 +344,73 @@ export abstract class TwitchDiscordCommands {
         //Found no channel saved in the database
         else {
             command.channel.send('No channel\'s added to the bot')
+
+            command.channel.stopTyping()
+        }
+    }
+
+    @Command("reco :type :category")
+    @Description("Channel suggestion based on category")
+    async recommendation(command: CommandMessage<ChannelArgs>) {
+        command.channel.startTyping()
+
+        const { type } = command.args
+
+        //The default Discord.ts method of destructuring considers whitespaces to differentiate elements, YouTube channels' name are not necessarily without wihtespaces
+        const game = command.commandContent.substr(7)
+
+        if (type == 't') {
+            const user = await twitchChannelRecommendation(game)
+
+            if (user !== undefined) {
+                const { name, image, description } = user
+
+                const channel = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(name)
+                .setURL(`https://www.twitch.tv/${name.toLowerCase()}`)
+                .setThumbnail(image)
+                .setDescription(description)
+                .addField('Add this channel', `"!add t ${name}"` )
+
+                command.channel.send(channel)
+
+                command.channel.stopTyping()
+            } else {
+                //Either there's no channel from the specified game or there's no game as specified by the user
+                command.channel.send(`Couldn't find any Twitch channel from ${game}`)
+
+                command.channel.stopTyping()
+            }
+        } else if (type == 'y') {
+            command.channel.send(`YouTube channel recommendation's not availlable`)
+
+            command.channel.stopTyping()
+        } else {
+            command.channel.send(`Invalid type: ${type}, specify a valid type of either 't' or 'y'`)
+
+            command.channel.stopTyping()
+        }
+    }
+
+    @Command("cat")
+    @Description("Discover new/other Twitch games/categories")
+    async category(command: CommandMessage) {
+        command.channel.startTyping()
+
+        const games = await TwitchService.games()
+
+        if (games.data.data.length > 0) {
+            const { name, box_art_url } =  games.data.data[Math.floor(Math.random() * games.data.data.length)]
+            
+            const game = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(name)
+            .setURL(`https://www.twitch.tv/directory/game/${encodeURIComponent(name)}`)
+            .setThumbnail(box_art_url.replace('{width}', '400').replace('{height}', '600'))
+            .addField('Channel recommendation', `"!reco t ${name}"` )
+
+            command.channel.send(game)
 
             command.channel.stopTyping()
         }

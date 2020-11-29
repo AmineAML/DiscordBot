@@ -102,7 +102,7 @@ export const getChannel = async(channelName: string) => {
  * @returns Array of live streaming videos of a channel
  */
 export const getLiveStreaming = async(channelId: string) => {
-    let data: { channelTitle: string, videoId: string, publishedAt: string }[] = []
+    let data: { channelTitle: string, videoId: string, publishedAt: string, thumbnail: string }[] = []
 
     await youtube.search.list({
         part: [
@@ -123,7 +123,7 @@ export const getLiveStreaming = async(channelId: string) => {
             //console.log(items)
 
             items!.forEach(item => {
-                data.push({ channelTitle: item.snippet!.channelTitle!, videoId: item.id!.videoId!, publishedAt: item!.snippet!.publishedAt! })
+                data.push({ channelTitle: item.snippet!.channelTitle!, videoId: item.id!.videoId!, publishedAt: item!.snippet!.publishedAt!, thumbnail: item.snippet!.thumbnails!.high!.url! || item.snippet!.thumbnails!.medium!.url! || item.snippet!.thumbnails!.default!.url! })
             })
         }
     })

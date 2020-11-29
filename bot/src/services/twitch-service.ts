@@ -5,7 +5,7 @@ import { EXPIRATION_IN_SECONDS } from '../config'
 /**
  * Finds a Twitch channel
  * @param channelName Twitch channel's name
- * @returns Array of channel's data
+ * @returns Object of channel's data
  */
 export const getChannel = async(channelName: string) => {
     const { data } = await TwitchClient.get(`/search/channels?query=${channelName}`);
@@ -15,7 +15,7 @@ export const getChannel = async(channelName: string) => {
 /**
  * Finds Twitch channels that are live streaming
  * @param channelNames List of Twitch channels' names
- * @returns List of Twitch channels that are live streaming
+ * @returns Arrays of objects of Twitch channels that are live streaming
  */
 export const getLiveStreaming = async(channelNames: string[]) => {
     const { data } = await TwitchClient.get(`/streams?user_login=${channelNames.join('&user_login=')}`);
@@ -58,7 +58,7 @@ export const subscribeWebhookChannel = async(channelId: string) => {
 /**
  * Unsubscribe from Twitch webhook of topic streams of a channel with its id
  * @param channelId Twitch channel's id
- * @returns Webhook subscription's reponse status
+ * @returns Webhook subscription's response status
  */
 export const unsubscribeWebhookChannel = async(channelId: string) => {
     const url = await callbackHubUrl()
@@ -90,8 +90,48 @@ export const unsubscribeWebhookChannel = async(channelId: string) => {
 
 /**
  * List of Twich webhook subscriptions
+ * @returns List of webhooks subscriptions
  */
 export const subscriptions = async() => {
     const data = await TwitchClient.get('/webhooks/subscriptions');
+    return data;
+}
+
+/**
+ * Finds a Twitch game/category
+ * @param gameName Twitch's game/category name
+ * @returns Array of games that match the query
+ */
+export const game = async(gameName: string) => {
+    const { data } = await TwitchClient.get(`/games?name=${encodeURIComponent(gameName)}`);
+    return data;
+}
+
+/**
+ * Finds channels under a game/category
+ * @param gameId Twitch game/category's id
+ * @returns Arrays of objects of channels
+ */
+export const channelByGame = async(gameId: string) => {
+    const { data } = await TwitchClient.get(`/streams?game_id=${gameId}`);
+    return data;
+}
+
+/**
+ * Finds a Twitch user
+ * @param userId Twitch channel's user id
+ * @returns Arrays of objects of users
+ */
+export const user = async(userId: string) => {
+    const { data } = await TwitchClient.get(`/users?id=${userId}`);
+    return data;
+}
+
+/**
+ * List of top Twitch games/categories
+ * @returns Arrays of objects of games/categories
+ */
+export const games = async() => {
+    const { data } = await TwitchClient.get('/games/top?limit=100');
     return data;
 }
