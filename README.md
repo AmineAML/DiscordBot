@@ -49,5 +49,10 @@ For development, specify which public URL tunnel you want to use
 - [Discord.ts repo and docs](https://github.com/OwenCalvin/discord.ts)
 - [Discord.js docs](https://discordjs.guide/#before-you-begin) and also [Discord.js docs](https://discord.js.org/#/docs/main/stable/general/welcome)
 
+## Useful
+- Simplify console logs
+- Multi servers with guild id
+- Modify reddit function with more Twitch and YouTube specific
+
 ## License
 [MIT](https://github.com/AmineAML/DiscordBot/blob/main/LICENSE)

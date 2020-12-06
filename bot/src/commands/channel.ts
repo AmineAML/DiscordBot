@@ -18,11 +18,11 @@ export abstract class TwitchDiscordCommands {
         const { type } = command.args
 
         //The default Discord.ts method of destructuring considers whitespaces to differentiate elements, YouTube channels' name are not necessarily without wihtespaces
-        const channelName = command.commandContent.substr(6)
+        let channelName = command.commandContent.substr(6)
 
         if (IN_PROD) {
             //Verify that the channel name exits in the database
-            const found = await Channel.exists({ channelName })
+            const found = await Channel.exists({ channelName: channelName.toLowerCase() })
 
             if (found) {
                 command.channel.send(`You've already added ${channelName} to your bot`)
@@ -32,8 +32,8 @@ export abstract class TwitchDiscordCommands {
                 if (type === "t") {
                     const cnlt = await TwitchService.getChannel(chnlName)
         
-                    if (cnlt.display_name === chnlName) {
-                        const channelId: string = cnlt.id
+                    if (cnlt.data[0].display_name === chnlName) {
+                        const channelId: string = cnlt.data[0].id
         
                         const expiration = moment().add(EXPIRATION_IN_SECONDS, 'seconds').toDate()
         
@@ -108,7 +108,7 @@ export abstract class TwitchDiscordCommands {
 
             if (pubUrlOnline) {
                 //Verify that the channel name exits in the database
-                const found = await Channel.exists({ channelName })
+                const found = await Channel.exists({ channelName: channelName.toLowerCase() })
 
                 if (found) {
                     command.channel.send(`You've already added ${channelName} to your bot`)
@@ -118,8 +118,8 @@ export abstract class TwitchDiscordCommands {
                     if (type === "t") {
                         const cnlt = await TwitchService.getChannel(chnlName)
         
-                        if (cnlt.display_name === chnlName) {
-                            const channelId: string = cnlt.id
+                        if (cnlt.data[0].display_name === chnlName) {
+                            const channelId: string = cnlt.data[0].id
         
                             const expiration = moment().add(EXPIRATION_IN_SECONDS, 'seconds').toDate()
         
