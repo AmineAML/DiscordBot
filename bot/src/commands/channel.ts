@@ -1,4 +1,4 @@
-import { CommandMessage, Command, Description } from '@typeit/discord'
+import { CommandMessage, Command, Description, Infos } from '@typeit/discord'
 import { Channel, Youtuber } from '../models'
 import { ChannelArgs } from '../types'
 import { isDevPubUrlWorking, streamersen, streaming, twitchChannelRecommendation, twitchChannelWebhook } from '../utils'
@@ -10,6 +10,7 @@ import { MessageEmbed } from 'discord.js'
 
 export abstract class TwitchDiscordCommands {
     @Command("add :type :channelName")
+    @Infos({ type: "channel" })
     @Description("Add a channel to the live streaming notification list")
     async webhook(command: CommandMessage<ChannelArgs>) {
         command.channel.startTyping()
@@ -194,6 +195,7 @@ export abstract class TwitchDiscordCommands {
     }
 
     @Command("remove :channelName")
+    @Infos({ type: "channel" })
     @Description("Remove a channel from the live streaming notification list")
     async remove(command: CommandMessage<ChannelArgs>) {
         command.channel.startTyping()
@@ -276,6 +278,7 @@ export abstract class TwitchDiscordCommands {
 
     //Twitch channels that are live streaming
     @Command("streaming")
+    @Infos({ type: "channel" })
     @Description("List of channels that are live streaming")
     async streamersall(command: CommandMessage) {
         command.channel.startTyping()
@@ -322,6 +325,7 @@ export abstract class TwitchDiscordCommands {
     }
 
     @Command("channels")
+    @Infos({ type: "channel" })
     @Description("List of channels that are added to the notifications of live streaming")
     async channels(command: CommandMessage) {
         command.channel.startTyping()
@@ -350,6 +354,7 @@ export abstract class TwitchDiscordCommands {
     }
 
     @Command("reco :type :category")
+    @Infos({ type: "channel" })
     @Description("Channel suggestion based on category")
     async recommendation(command: CommandMessage<ChannelArgs>) {
         command.channel.startTyping()
@@ -394,14 +399,17 @@ export abstract class TwitchDiscordCommands {
     }
 
     @Command("cat")
+    @Infos({ type: "channel" })
     @Description("Discover new/other Twitch games/categories")
     async category(command: CommandMessage) {
         command.channel.startTyping()
 
+        console.log(command.guild!.id)
+
         const games = await TwitchService.games()
 
-        if (games.data.data.length > 0) {
-            const { name, box_art_url } =  games.data.data[Math.floor(Math.random() * games.data.data.length)]
+        if (games.data.length > 0) {
+            const { name, box_art_url } =  games.data[Math.floor(Math.random() * games.data.length)]
             
             const game = new MessageEmbed()
             .setColor('#0099ff')

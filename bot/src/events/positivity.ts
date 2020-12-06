@@ -1,5 +1,4 @@
 import { Description, On, ArgsOf, Client } from '@typeit/discord'
-import { TextChannel } from 'discord.js';
 
 export abstract class RedditDiscordCommands {
     @On("message")

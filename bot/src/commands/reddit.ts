@@ -1,10 +1,11 @@
-import { CommandMessage, Command, Description } from '@typeit/discord'
+import { CommandMessage, Command, Description, Infos } from '@typeit/discord'
 import { RedditPosts } from '../types'
 import { r } from '../utils'
 import * as RedditService from '../services/reddit-service'
 
 export abstract class TwitchDiscordCommands {
     @Command("pro")
+    @Infos({ type: "quotes" })
     @Description("Useful pro advices")
     async pro(command: CommandMessage) {
         command.channel.startTyping()
@@ -21,6 +22,7 @@ export abstract class TwitchDiscordCommands {
     }
 
     @Command("stoic")
+    @Infos({ type: "quotes" })
     @Description("Useful quotes of stoicism")
     async stoic(command: CommandMessage) {
         command.channel.startTyping()
@@ -50,6 +52,7 @@ export abstract class TwitchDiscordCommands {
     }
 
     @Command("hera")
+    @Infos({ type: "art" })
     @Description("Pictures of heraldry, coat of arms, blazonry and the like")
     async heraldry(command: CommandMessage) {
         command.channel.startTyping()

@@ -1,6 +1,6 @@
 import { Description, On, ArgsOf, Client } from '@typeit/discord'
 import { TextChannel } from 'discord.js';
-import { getBotMessage } from '../utils';
+import { getBotMessage, getSubredditLink } from '../utils';
 
 export abstract class RedditDiscordCommands {
     @On("message")
@@ -23,40 +23,16 @@ export abstract class RedditDiscordCommands {
 
         const userMessageContent = message.content.toLowerCase()
 
+        const subreddit = await getSubredditLink(userMessageContent)
+
         //Based on the sentiment analyser to know it the message is negative use an advice subreddit, else use a not advice specific subreddit
-        if (userMessageContent.includes('language')) {
-            const botUserMessage = await getBotMessage('languagelearning', userMessageContent)
+        if (subreddit !== undefined) {
+            const botUserMessage = await getBotMessage(subreddit, userMessageContent)
 
             channel.send(botUserMessage)
             
             channel.stopTyping()
-        } else if (userMessageContent.includes('dating') && userMessageContent.includes('advice'))  {
-            const botUserMessage = await getBotMessage('dating_advice', userMessageContent)
-
-            channel.send(botUserMessage)
-
-            channel.stopTyping()
-        } else if (userMessageContent.includes('relationship') && userMessageContent.includes('advice')) {
-            const botUserMessage = await getBotMessage('relationship_advice', userMessageContent)
-
-            channel.send(botUserMessage)
-            
-            channel.stopTyping()
-        } else if (userMessageContent.includes('dating')) {
-            const botUserMessage = await getBotMessage('dating', userMessageContent)
-
-            channel.send(botUserMessage)
-
-            channel.stopTyping()
-        } else if (userMessageContent.includes('relationship')) {
-            const botUserMessage = await getBotMessage('relationships', userMessageContent)
-
-            channel.send(botUserMessage)
-
-            channel.stopTyping()
-        }
-        
-        else {
+        } else {
             channel.send(message.content)
 
             channel.stopTyping()
