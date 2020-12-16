@@ -1,7 +1,7 @@
 {
-  "name": "discordbot",
+  "name": "discord-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Recieve notification about Twitch and YouTube channels live streams, and more like quotes from Reddit",
   "main": "index.js",
   "scripts": {
     "up": "docker-compose --env-file ./bot/.env up -d",
@@ -10,7 +10,22 @@
     "down": "docker-compose down",
     "dev": "npm run dev --prefix bot"
   },
-  "keywords": [],
+  "keywords": [
+    "discord.ts",
+    "NLP.js",
+    "twitch api",
+    "reddit api",
+    "youtube data api",
+    "nodejs",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/AmineAML/discordbot/issues"
+  },
+  "repository": {
+    "url": "https://github.com/AmineAML/discordbot",
+    "type": "git"
+  },
   "author": "AmineAML",
   "license": "MIT"
 }
