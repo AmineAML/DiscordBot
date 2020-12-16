@@ -52,7 +52,7 @@ Edit the Dockerfile with the port you want to use and expose the same port (I'm 
 - Your image is ready, you can try it by running a container based of it, tag it and push to a Docker registry for production
 
 ## Docs
-- [Twitch API](https://dev.twitch.tv/docs/)
+- [Twitch API](https://dev.twitch.tv/docs/) and [YouTube Data API](https://developers.google.com/youtube/v3/docs)
 - [Discord.ts repo and docs](https://github.com/OwenCalvin/discord.ts)
 - [Discord.js docs](https://discordjs.guide/#before-you-begin) and also [Discord.js docs](https://discord.js.org/#/docs/main/stable/general/welcome)
 
