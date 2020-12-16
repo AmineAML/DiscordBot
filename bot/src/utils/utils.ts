@@ -1,8 +1,5 @@
 import { Client } from "@typeit/discord"
-import { IN_PROD, publicUrl } from '../config'
-import dotenv from 'dotenv'
-
-dotenv.config()
+import { IN_PROD, publicUrl, TWITCH_HUB_CALLBACK } from '../config'
 
 /**
  * All bot commands
@@ -114,8 +111,6 @@ export const r = (results: any) => {
  */
 export const callbackHubUrl = async () => {
     if (IN_PROD) {
-        const { TWITCH_HUB_CALLBACK } = process.env
-
         const url = TWITCH_HUB_CALLBACK
 
         return url

@@ -1,11 +1,5 @@
 import { google } from 'googleapis'
-import dotenv from 'dotenv'
-
-dotenv.config()
-
-const {
-    YOUTUBE_API_KEY
-} = process.env
+import { YOUTUBE_API_KEY } from '../config';
 
 /**
  * Creates a YouTube Client for the YouTube Data API

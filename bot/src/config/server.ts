@@ -1,20 +1,13 @@
-import dotenv from "dotenv"
 import ngrok from 'ngrok';
-import { IN_PROD, PORT } from './app';
+import { IN_PROD, port } from './app';
+import { LOCALXPOSE_ACCESS_TOKEN, LOCALXPOSE_SUBDOMAIN, NGROK_AUTHTOKEN } from './env';
 
 const LocalXpose = require('localxpose')
 
-dotenv.config()
-
-const {
-    NGROK_AUTHTOKEN,
-    LOCALXPOSE_ACCESS_TOKEN,
-    LOCALXPOSE_SUBDOMAIN,
-} = process.env
 
 export const NGROK_URL = ngrok.connect({
     proto: 'http',
-    addr: PORT,
+    addr: port,
     authtoken: NGROK_AUTHTOKEN
 })
 
@@ -22,7 +15,7 @@ export const client = new LocalXpose(LOCALXPOSE_ACCESS_TOKEN)
 
 const LOCALXPOSE_URL = client.http({
     region: 'eu',
-    to: `127.0.0.1:${PORT}`,
+    to: `127.0.0.1:${port}`,
     subdomain: LOCALXPOSE_SUBDOMAIN,
     //basicAuth: 'user:pass'
 })

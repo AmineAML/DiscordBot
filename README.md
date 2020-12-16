@@ -37,6 +37,8 @@ Make sure you have installed all of this prerequisites
 - An easy way to get started with webhooks without using a bot, is by making use of [IFTTT](https://ifttt.com), you can follow this [gist by smiley](https://gist.github.com/smiley/78c1c2a57d17a179a978a1438b389710) which goes into details of integrating a webhook which triggers a Disocrd notification. Keep in mind that this is specific to when your channel goes live, if you're like me insterested to trigger notifications of other Twitch channels that you follow going live, in [step 4 of part 3](https://gist.github.com/smiley/78c1c2a57d17a179a978a1438b389710#part-3---create-a-new-ifttt-appletrecipe) from the same gist choose "Stream going live for a channel you follow" rather than the option listed there (by using this option you limit yourself to only Twitch channels that you follow with your own account).
 
 ### Usage
+
+#### Development
 For development, specify which public URL tunnel you want to use
 * Running with ngrok
     - ```npm run up --server=n```
@@ -44,15 +46,15 @@ For development, specify which public URL tunnel you want to use
     - ```npm run up --server=l```
 * A notification will ask you if you want to share `mongo-init.sh` file with Docker. Accept it
 
+#### Production
+Edit the Dockerfile with the port you want to use and expose the same port (I'm using port 8080, you can modify it), also edit .env file values of Discord, Twitch API, YouTube API and the `MONGODB_PRODUCTION_URL` as for node environment the Dockerfile handles it
+- Build the docker image: `docker build -t your_image_name:version`
+- Your image is ready, you can try it by running a container based of it, tag it and push to a Docker registry for production
+
 ## Docs
 - [Twitch API](https://dev.twitch.tv/docs/)
 - [Discord.ts repo and docs](https://github.com/OwenCalvin/discord.ts)
 - [Discord.js docs](https://discordjs.guide/#before-you-begin) and also [Discord.js docs](https://discord.js.org/#/docs/main/stable/general/welcome)
-
-## Useful
-- Simplify console logs
-- Multi servers with guild id
-- Modify reddit function with more Twitch and YouTube specific
 
 ## License
 [MIT](https://github.com/AmineAML/DiscordBot/blob/main/LICENSE)

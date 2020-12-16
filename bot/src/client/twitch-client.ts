@@ -1,15 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import dotenv from 'dotenv'
 import * as AxiosLogger from 'axios-logger'
 import moment from 'moment'
-
-dotenv.config()
+import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from '../config'
 
 //App access token
-const {
-    TWITCH_CLIENT_ID,
-    TWITCH_CLIENT_SECRET
-} = process.env
 
 let access_token: string
 
@@ -38,7 +32,7 @@ const Twitch = {
             }).then(function(response) {
                 access_token = response.data.access_token
 
-                console.log(access_token)
+                //console.log(access_token)
 
                 expire_token = moment().add(response.data.expires_in, 'seconds')
             })

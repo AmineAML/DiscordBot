@@ -2,13 +2,10 @@ import { Channel, WebhookChannelId, Youtuber, Stream } from '../models'
 import { TwitchStreamers } from '../types'
 import * as TwitchService from '../services/twitch-service'
 import { EXPIRATION_IN_SECONDS, hook } from '../config'
-import dotenv from 'dotenv'
 import moment from 'moment'
 import axios from 'axios'
 import { callbackHubUrl, milliseconds, r, sleep } from './utils'
 import * as YoutubeServices from '../services/youtube-service'
-
-dotenv.config()
 
 /**
  * Finds from an array of streamers those who're live streaming

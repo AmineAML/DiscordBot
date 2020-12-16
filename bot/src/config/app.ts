@@ -1,10 +1,5 @@
-import dotenv from 'dotenv'
-
-dotenv.config()
-
-export const {
-    NODE_ENV,
-    PORT
-} = process.env
+import { NODE_ENV, PORT } from "./env"
 
 export const IN_PROD = NODE_ENV === 'production'
+
+export const port = PORT || 3000

@@ -1,15 +1,9 @@
 import { WebhookClient } from 'discord.js'
-import dotenv from 'dotenv'
+import { DISCORD_CHANNEL_WEBHOOK } from './env'
 
-dotenv.config()
+const webhook_id = DISCORD_CHANNEL_WEBHOOK !== undefined ? DISCORD_CHANNEL_WEBHOOK!.split("/")[5] : undefined
 
-const {
-    DISCORD_CHANNEL_WEBHOOK
-} = process.env
-
-const webhook_id = DISCORD_CHANNEL_WEBHOOK!.length > 0 ? DISCORD_CHANNEL_WEBHOOK!.split("/")[5] : undefined
-
-const webhook_token= DISCORD_CHANNEL_WEBHOOK!.length > 0 ? DISCORD_CHANNEL_WEBHOOK!.split("/")[6]: undefined
+const webhook_token= DISCORD_CHANNEL_WEBHOOK !== undefined ? DISCORD_CHANNEL_WEBHOOK!.split("/")[6]: undefined
 
 console.log({ webhook_id, webhook_token })
 

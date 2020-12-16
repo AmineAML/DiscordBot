@@ -4,7 +4,7 @@ import express from 'express'
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors'
-import { hook } from '../config'
+import { hook, port } from '../config'
 
 export abstract class listener {
   @On("ready")
@@ -79,7 +79,7 @@ export abstract class listener {
       res.send({ message: 'OK' })
     })
 
-    app.listen(3000, () => console.log(`🚀 => http://localhost:3000`))
+    app.listen(port, () => console.log(`🚀 => http://localhost:${port}`))
 
     webhookResubscriptionsManagement()
 
