@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  bruhbot:
+    image: "bruhbot:prod"
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    networks:
+      - "production"
+    restart: "on-failure"
+
+networks:
+  production:
+    external: true

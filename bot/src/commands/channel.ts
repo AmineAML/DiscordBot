@@ -31,9 +31,11 @@ export abstract class TwitchDiscordCommands {
 
                 if (type === "t") {
                     const cnlt = await TwitchService.getChannel(chnlName)
+
+                    const cnltExist = cnlt.data.filter((brodcasters: any) => brodcasters.display_name === channelName)[0]
         
-                    if (cnlt.data[0].display_name === chnlName) {
-                        const channelId: string = cnlt.data[0].id
+                    if (cnltExist) {
+                        const channelId: string = cnltExist.id
         
                         const expiration = moment().add(EXPIRATION_IN_SECONDS, 'seconds').toDate()
         
@@ -117,9 +119,13 @@ export abstract class TwitchDiscordCommands {
 
                     if (type === "t") {
                         const cnlt = await TwitchService.getChannel(chnlName)
+
+                        const cnltExist = cnlt.data.filter((brodcasters: any) => brodcasters.display_name === channelName)[0]
+
+                        console.log(cnltExist)
         
-                        if (cnlt.data[0].display_name === chnlName) {
-                            const channelId: string = cnlt.data[0].id
+                        if (cnltExist) {
+                            const channelId: string = cnltExist.id
         
                             const expiration = moment().add(EXPIRATION_IN_SECONDS, 'seconds').toDate()
         
