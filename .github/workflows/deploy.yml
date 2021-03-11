@@ -60,7 +60,6 @@ jobs:
         echo DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} >> .env
         echo DISCORD_CHANNEL_WEBHOOK=${{ secrets.DISCORD_CHANNEL_WEBHOOK }} >> .env
         echo MONGODB_PRODUCTION_URL=${{ secrets.MONGODB_PRODUCTION_URL }} >> .env
-        echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
         echo TWITCH_CLIENT_ID=${{ secrets.TWITCH_CLIENT_ID }} >> .env
         echo TWITCH_CLIENT_SECRET=${{ secrets.TWITCH_CLIENT_SECRET }} >> .env
         echo TWITCH_HUB_CALLBACK=${{ secrets.TWITCH_HUB_CALLBACK }} >> .env
