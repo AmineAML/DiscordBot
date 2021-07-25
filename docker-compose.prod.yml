@@ -10,7 +10,7 @@ services:
       - "production"
     restart: "on-failure"
     ports: 
-      - "8080:8080"
+      - "8000:8000"
 
 networks:
   production:
