@@ -1,5 +1,6 @@
 import { CommandMessage, Command, Description, Infos } from '@typeit/discord'
 import { MessageEmbed } from 'discord.js'
+import { BOT_NAME } from '../config'
 import { artCommands, channelsCommands, generalCommands, quotesCommands } from '../utils/utils'
 
 export abstract class HelpCommand {
@@ -15,7 +16,7 @@ export abstract class HelpCommand {
         
         const discordBotCommands = new MessageEmbed()
         .setColor('#0099ff')
-        .addField('Chat', `Philosophy channel: Want to chat? BruhBot can talk about ${bot.join(', ')}\nPositivity channel: No hate chat! just smile, say something nice and be told the same` )
+        .addField('Chat', `Philosophy channel: Want to chat? ${BOT_NAME} can talk about ${bot.join(', ')}\nPositivity channel: No hate chat! just smile, say something nice and be told the same` )
         .addField('General Commands', `${await generalCommands()}`)
         .addField('Channels Commands', `${await channelsCommands()}`)
         .addField('Quotes Commands', `${await quotesCommands()}`)

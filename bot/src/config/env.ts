@@ -19,5 +19,6 @@ export const {
     TWITCH_CLIENT_SECRET,
     YOUTUBE_API_KEY,
     DISCORD_BOT_TOKEN,
-    TWITCH_HUB_CALLBACK
+    TWITCH_HUB_CALLBACK,
+    BOT_NAME,
 } = process.env

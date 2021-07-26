@@ -104,7 +104,7 @@ export abstract class TwitchDiscordCommands {
             }
         } else {
             //Verify that the LocalXpose and/or ngrok tunnel server's running by using axios
-            const pubUrlOnline = isDevPubUrlWorking()
+            const pubUrlOnline = await isDevPubUrlWorking()
 
             console.log(pubUrlOnline)
 

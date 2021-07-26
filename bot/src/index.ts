@@ -17,7 +17,9 @@ const beforeShutdown = require('./utils/before-shutdown');
     //Specify the server by using npm run up --server=n or npm run up --server=l
     const url = await publicUrl(SERVER_URL_OPTION)
 
-    console.log(`  => ${url}`)
+    console.log(await url)
+
+    console.log(`  => ${await url}`)
    
    // Register shutdown callbacks: they will be executed in the order they were provided
    beforeShutdown(() => console.log('beforeShutDown'));
