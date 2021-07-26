@@ -8,11 +8,7 @@ COPY ./bot/package*.json ./
 
 COPY ./bot/.env ./
 
-ENV NODE_ENV=production
-
 RUN npm ci --production
-
-ENV PORT=8000
 
 EXPOSE 8000
 
