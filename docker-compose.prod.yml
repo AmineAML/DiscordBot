@@ -17,4 +17,4 @@ services:
 
 networks:
   production:
-    external: true
+    # external: true

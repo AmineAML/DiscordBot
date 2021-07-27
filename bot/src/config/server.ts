@@ -4,7 +4,6 @@ import { LOCALXPOSE_ACCESS_TOKEN, LOCALXPOSE_SUBDOMAIN, NGROK_AUTHTOKEN } from '
 
 const LocalXpose = require('localxpose')
 
-
 export const NGROK_URL = ngrok.connect({
     proto: 'http',
     addr: port,

@@ -9,7 +9,7 @@
     "stop": "docker-compose stop",
     "down": "docker-compose -f docker-compose.prod.yml down",
     "dev": "npm run dev --prefix bot",
-    "prod": "docker-compose -f docker-compose.prod.yml up -d",
+    "prod": "docker-compose -f docker-compose.prod.yml up -d --build --force-recreate",
     "prod:build": "cd bot && npm run build"
   },
   "keywords": [

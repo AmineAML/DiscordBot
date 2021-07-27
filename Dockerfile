@@ -8,7 +8,7 @@ COPY ./bot/package*.json ./
 
 COPY ./bot/.env ./
 
-RUN npm ci --production
+RUN npm install
 
 EXPOSE 8000
 
