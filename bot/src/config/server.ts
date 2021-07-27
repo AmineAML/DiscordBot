@@ -30,7 +30,7 @@ export const publicUrl = async(server?: string) => {
             return serverUrl
         } else {
             if (server == 'n') {
-                serverUrl = String(NGROK_URL)
+                serverUrl = String(await NGROK_URL)
     
                 return serverUrl
             } else if (server == 'l') {

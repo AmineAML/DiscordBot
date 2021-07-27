@@ -1,7 +1,7 @@
 import { Channel, WebhookChannelId, Youtuber, Stream } from '../models'
 import { TwitchStreamers } from '../types'
 import * as TwitchService from '../services/twitch-service'
-import { EXPIRATION_IN_SECONDS, hook } from '../config'
+import { EXPIRATION_IN_SECONDS, hook, publicUrl } from '../config'
 import moment from 'moment'
 import axios from 'axios'
 import { callbackHubUrl, milliseconds, r, sleep } from './utils'
@@ -18,6 +18,8 @@ import * as YoutubeServices from '../services/youtube-service'
 export const streaming = async (streamers: { channelName: string, channelId: string, type: string }[]) => {
     let twitchers: string[] = []
     let youtubers: string[] = []
+
+    console.log(streamers)
     
     streamers.forEach(streamer => {
         if (streamer.type === 't') {
@@ -27,26 +29,30 @@ export const streaming = async (streamers: { channelName: string, channelId: str
         }
     })
 
-    const channels: TwitchStreamers.UsersStreaming = await TwitchService.getLiveStreaming(twitchers);
+    let twitchersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = []
 
-    const { data } =  channels
+    if (twitchers && twitchers.length > 0) {
+        const channels: TwitchStreamers.UsersStreaming = await TwitchService.getLiveStreaming(twitchers);
+
+        const { data } =  channels
+
+        for (let i = 0; i < data.length; i++) {
+            twitchersStreaming.push({ channelName: data[i].user_name, channelUrl: `https://www.twitch.tv/${data[i].user_name.toLowerCase()}`, thumbnail: data[i].thumbnail_url.replace('{width}', '480').replace('{height}', '360')})
+        }
+    }
 
     let youtubersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = []
 
-    await Promise.allSettled(youtubers.map(async youtuber => {
-        const data = await YoutubeServices.getLiveStreaming(youtuber)
-
-        if (data.length > 0) {
-            data.forEach(channel => {
-                youtubersStreaming.push({ channelName: channel.channelTitle, channelUrl: `https://www.youtube.com/watch?v=${channel.videoId}`, thumbnail: channel.thumbnail })
-            })
-        }
-    }))
-
-    let twitchersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = []
-
-    for (let i = 0; i < data.length; i++) {
-        twitchersStreaming.push({ channelName: data[i].user_name, channelUrl: `https://www.twitch.tv/${data[i].user_name.toLowerCase()}`, thumbnail: data[i].thumbnail_url.replace('{width}', '480').replace('{height}', '360')})
+    if (youtubers && youtubers.length > 0) {
+        await Promise.allSettled(youtubers.map(async youtuber => {
+            const data = await YoutubeServices.getLiveStreaming(youtuber)
+    
+            if (data.length > 0) {
+                data.forEach(channel => {
+                    youtubersStreaming.push({ channelName: channel.channelTitle, channelUrl: `https://www.youtube.com/watch?v=${channel.videoId}`, thumbnail: channel.thumbnail })
+                })
+            }
+        }))
     }
 
     let usersStreaming: { channelName: string, channelUrl: string, thumbnail: string }[] = twitchersStreaming.concat(youtubersStreaming)
@@ -246,7 +252,8 @@ export const isDevPubUrlWorking = async() => {
     let res
 
     await axios({
-        url: `${callbackHubUrl()}/devpuburl`,
+        // url: `${callbackHubUrl()}/devpuburl`,
+        url: `${await publicUrl()}/devpuburl`,
         method: 'get'
     })
     .then((response: any) => {
