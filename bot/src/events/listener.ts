@@ -1,4 +1,4 @@
-import { On, ArgsOf, Client } from '@typeit/discord'
+import { On, ArgsOf, Client } from '@typeit/discord'  
 import { botCommands, webhookConfirmChannelById, webhookResubscriptionsManagement, youtuberLiveStreaming } from '../utils'
 import express from 'express'
 import helmet from 'helmet';
@@ -27,6 +27,7 @@ export abstract class listener {
 
     app.use(express.json())
 
+    // DEPRECATED as of Twitch has depracated the webhook subscriptions in favor of eventsub subscriptions
     //Twitch request this route to verify that the server is working geniuly
     app.get('/twitchwebhookcallback', async (req, res) => {
       const challengeToken = req.query['hub.challenge']
@@ -60,12 +61,23 @@ export abstract class listener {
 
     app.post('/twitchwebhookcallback', async (req, res) => {
       try {
-        const { data } = req.body
+        const b = req.body
 
-        console.log(data)
+        console.log(b)
 
-        if (data.length > 0) {
-          hook !== false ? hook.send(`@everyone ${data[0].user_name} is live streaming! Here's a link: https://www.twitch.tv/${data[0].user_name.toLowerCase()}`) : ''
+        if (b && b['challenge']) {
+          const userId = b.subscription.condition.broadcaster_user_id
+
+          console.log(userId)
+
+          await webhookConfirmChannelById(userId)
+
+          return res.send(b['challenge'])
+        }
+
+        if (b) {
+          // hook !== false ? hook.send(`@everyone ${data[0].user_name} is live streaming! Here's a link: https://www.twitch.tv/${data[0].user_name.toLowerCase()}`) : ''
+          if (hook !== false) hook.send(`@everyone ${b.event.broadcaster_user_name} is live streaming! Here's a link: https://www.twitch.tv/${b.event.broadcaster_user_name.toLowerCase()}`)
         }
       } catch (error) {
         console.log(error)

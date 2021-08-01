@@ -32,22 +32,35 @@ export const subscribeWebhookChannel = async(channelId: string) => {
 
     let res
 
+    // const data = {
+    //     "hub.callback": url,
+    //     "hub.mode": "subscribe",
+    //     "hub.topic": `https://api.twitch.tv/helix/streams?user_id=${channelId}`,
+    //     "hub.lease_seconds": EXPIRATION_IN_SECONDS
+    // }
+
     const data = {
-        "hub.callback": url,
-        "hub.mode": "subscribe",
-        "hub.topic": `https://api.twitch.tv/helix/streams?user_id=${channelId}`,
-        "hub.lease_seconds": EXPIRATION_IN_SECONDS
+        "type": "stream.online",
+        "version": "1",
+        "condition": {
+            "broadcaster_user_id": channelId
+        },
+        "transport": {
+            "method": "webhook",
+            "callback": url,
+            "secret": "38a1f5844640cd47aafb"
+        }
     }
 
-    await TwitchClient.post('/webhooks/hub', data)
+    await TwitchClient.post('/eventsub/subscriptions', data)
     .then((response: any) => {
-        //console.log(response)
+        // console.log(response)
 
         res = response.status
     })
     .catch(function (error: any) {
         if (error.response) {
-            //console.log(error.response)
+            // console.log(error.response)
 
             res = error.response.status
         }
